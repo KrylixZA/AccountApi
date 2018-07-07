@@ -1,6 +1,7 @@
-package dataaccesss
+package dataaccess
 
 import (
+	"reflect"
 	"testing"
 
 	dataAccess "../../src/DataAccess"
@@ -8,7 +9,7 @@ import (
 	"../TestHelpers/Builders"
 )
 
-func TestCreateAccount_GivenCreateAccountRequest_ShouldAddAccountToMap(t *testing.T) {
+func TestCreateAccount_GivenCreateAccountRequest_ShouldReturnAccountsAndSuccessfulResult(t *testing.T) {
 	// Arrange
 	builder := builders.CreateAccountRequestBuilder{}
 	request := builder.WithUsername("Test").WithEmail("test@test.com").WithFirstName("Simon").WithSurname("Headley").WithPassword("Test1234").Build()
@@ -24,32 +25,32 @@ func TestCreateAccount_GivenCreateAccountRequest_ShouldAddAccountToMap(t *testin
 
 	// Assert
 	if !success {
-		t.Fail()
+		t.Error("Expected successful result. Actual result was unsuccessful.")
 	}
 	if len(actualAccounts) != len(expectedAccounts) {
-		t.Fail()
+		t.Errorf("Expected map count was %d. Actual map count was %d", len(expectedAccounts), len(actualAccounts))
 	}
 	for i := 1; i < len(actualAccounts); i++ {
 		expected := expectedAccounts[i]
 		actual := actualAccounts[i]
 
 		if expected.AccountID != actual.AccountID {
-			t.Fail()
+			t.Errorf("Expected AccountID was %d. Actual AccountID was %d", expected.AccountID, actual.AccountID)
 		}
 		if expected.Login != actual.Login {
-			t.Fail()
-		}
-		if expected.Login != actual.Login {
-			t.Fail()
+			t.Errorf("Expected Login was %s. Actual Login was %s", expected.Login, actual.Login)
 		}
 		if expected.Password != actual.Password {
-			t.Fail()
+			t.Errorf("Expected Password was %s. Actual Password was %s", expected.Password, actual.Password)
 		}
 		if expected.FirstName != actual.FirstName {
-			t.Fail()
+			t.Errorf("Expected FirstName was %s. Actual FirstName was %s", expected.FirstName, actual.FirstName)
 		}
 		if expected.Surname != actual.Surname {
-			t.Fail()
+			t.Errorf("Expected AccountID was %s. Actual AccountID was %s", expected.Surname, actual.Surname)
+		}
+		if !reflect.DeepEqual(expected, actual) {
+			t.Error("Deep equal shows struct properties not matching.")
 		}
 	}
 }
