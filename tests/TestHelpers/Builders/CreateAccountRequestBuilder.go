@@ -3,38 +3,38 @@ package builders
 import requests "../../../src/Models/Requests"
 
 type CreateAccountRequestBuilder struct {
-	username  string
-	email     string
-	firstName string
-	surname   string
-	password  string
+	Username  string
+	Email     string
+	FirstName string
+	Surname   string
+	Password  string
 }
 
 func (builder *CreateAccountRequestBuilder) WithUsername(username string) *CreateAccountRequestBuilder {
-	builder.username = username
+	builder.Username = username
 	return builder
 }
 
 func (builder *CreateAccountRequestBuilder) WithEmail(email string) *CreateAccountRequestBuilder {
-	builder.email = email
+	builder.Email = email
 	return builder
 }
 
 func (builder *CreateAccountRequestBuilder) WithFirstName(firstName string) *CreateAccountRequestBuilder {
-	builder.firstName = firstName
+	builder.FirstName = firstName
 	return builder
 }
 
 func (builder *CreateAccountRequestBuilder) WithSurname(surname string) *CreateAccountRequestBuilder {
-	builder.surname = surname
+	builder.Surname = surname
 	return builder
 }
 
 func (builder *CreateAccountRequestBuilder) WithPassword(password string) *CreateAccountRequestBuilder {
-	builder.password = password
+	builder.Password = password
 	return builder
 }
 
 func (builder *CreateAccountRequestBuilder) Build() requests.CreateAccountRequest {
-	return requests.CreateAccountRequest{Username: builder.username, Email: builder.email, FirstName: builder.firstName, Surname: builder.surname, Password: builder.password}
+	return requests.CreateAccountRequest{Username: builder.Username, Email: builder.Email, FirstName: builder.FirstName, Surname: builder.Surname, Password: builder.Password}
 }

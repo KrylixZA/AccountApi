@@ -11,8 +11,12 @@ func (AccountDataAccess) ResetPassword(request requests.ResetPasswordRequest) (*
 
 	account, ok := accounts[request.AccountID]
 	if ok {
-		account.Password = request.NewPassword
-		return &account, true
+		if account.Password == request.CurrentPassword {
+			account.Password = request.NewPassword
+			return &account, true
+		}
+
+		return nil, false
 	}
 
 	return nil, false

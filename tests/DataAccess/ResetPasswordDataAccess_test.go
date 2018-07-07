@@ -5,18 +5,18 @@ import (
 	"testing"
 
 	dataAccess "../../src/DataAccess"
-	builders "../TestHelpers/Builders"
+	"../TestHelpers/Builders"
 )
 
-func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
+func TestResetPassword_GivenRequestWithIncorrectAccountIdAndIncorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
-	login := "someBadLogin"
-	password := "someBadPassword"
+	builder := builders.ResetPasswordRequestBuilder{}
+	request := builder.WithAccountID(-1).WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	actualAccount, success := dataAccess.ResetPassword(request)
 
 	// Assert
 	if success {
@@ -27,15 +27,15 @@ func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsucce
 	}
 }
 
-func TestLogin_GivenIncorrectLoginAndCorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
+func TestResetPassword_GivenRequestWithIncorrectAccountIdAndCorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
-	login := "someBadLogin"
-	password := "password1234"
+	builder := builders.ResetPasswordRequestBuilder{}
+	request := builder.WithAccountID(-1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	actualAccount, success := dataAccess.ResetPassword(request)
 
 	// Assert
 	if success {
@@ -46,15 +46,15 @@ func TestLogin_GivenIncorrectLoginAndCorrectPassword_ShouldReturnNilAndUnsuccess
 	}
 }
 
-func TestLogin_GivenCorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
+func TestResetPassword_GivenRequestWithCorrectAccountIdAndIncorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
-	login := "headleysj@gmail.com"
-	password := "someBadPassword"
+	builder := builders.ResetPasswordRequestBuilder{}
+	request := builder.WithAccountID(1).WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	actualAccount, success := dataAccess.ResetPassword(request)
 
 	// Assert
 	if success {
@@ -65,18 +65,18 @@ func TestLogin_GivenCorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccess
 	}
 }
 
-func TestLogin_GivenCorrectLoginAndCorrectPassword_ShouldReturnAccountAndSuccessfulResult(t *testing.T) {
+func TestResetPassword_GivenRequestWithCorrectAccountIdAndCorrectCurrentPassword_ShouldReturnAccountAndSuccessfulResult(t *testing.T) {
 	// Arrange
-	login := "headleysj@gmail.com"
-	password := "password1234"
+	requestBuilder := builders.ResetPasswordRequestBuilder{}
+	request := requestBuilder.WithAccountID(1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	accountBuilder := builders.AccountBuilder{}
-	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("headleysj@gmail.com").WithPassword("password1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("headleysj@gmail.com").Build()
+	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("headleysj@gmail.com").WithPassword("test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("headleysj@gmail.com").Build()
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	actualAccount, success := dataAccess.ResetPassword(request)
 
 	// Assert
 	if !success {
