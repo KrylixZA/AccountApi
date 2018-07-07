@@ -18,7 +18,7 @@ func (manager *AccountManager) CreateAccount(dataAccessor interfaces.IAccountDat
 			panic(err)
 		}
 
-		return http.StatusOK, serializedResponse
+		return http.StatusCreated, serializedResponse
 	}
 
 	errorResponse := responses.ErrorResponse{Code: 3, Message: "Internal Server Error.", Description: "Failed to create account."}
