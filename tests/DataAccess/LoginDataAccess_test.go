@@ -8,34 +8,74 @@ import (
 	models "../../src/Models"
 )
 
-func TestGetAccountGetails_GivenAccountIdNotInMap_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
+func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
-	accountID := 2
+	login := "someBadLogin"
+	password := "someBadPassword"
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	account, success := dataAccess.GetAccountDetails(accountID)
+	actualAccount, success := dataAccess.Login(login, password)
 
 	// Assert
 	if success {
 		t.Error("Expected unsuccessful result. Actual result was successful.")
 	}
-	if account != nil {
+	if actualAccount != nil {
 		t.Error("Expected nil account. Actual account was not nil.")
 	}
 }
 
-func TestGetAccountDetails_GivenAccountIdInMap_ShouldReturnAccountAndSuccessfulResult(t *testing.T) {
+func TestLogin_GivenIncorrectLoginAndCorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
-	accountID := 1
+	login := "someBadLogin"
+	password := "password1234"
+
+	dataAccess := dataAccess.AccountDataAccess{}
+
+	// Act
+	actualAccount, success := dataAccess.Login(login, password)
+
+	// Assert
+	if success {
+		t.Error("Expected unsuccessful result. Actual result was successful.")
+	}
+	if actualAccount != nil {
+		t.Error("Expected nil account. Actual account was not nil.")
+	}
+}
+
+func TestLogin_GivenCorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
+	// Arrange
+	login := "headleysj@gmail.com"
+	password := "someBadPassword"
+
+	dataAccess := dataAccess.AccountDataAccess{}
+
+	// Act
+	actualAccount, success := dataAccess.Login(login, password)
+
+	// Assert
+	if success {
+		t.Error("Expected unsuccessful result. Actual result was successful.")
+	}
+	if actualAccount != nil {
+		t.Error("Expected nil account. Actual account was not nil.")
+	}
+}
+
+func TestLogin_GivenCorrectLoginAndCorrectPassword_ShouldReturnAccountAndSuccessfulResult(t *testing.T) {
+	// Arrange
+	login := "headleysj@gmail.com"
+	password := "password1234"
 
 	expectedAccount := &models.Account{AccountID: 1, Login: "headleysj@gmail.com", Password: "password1234", FirstName: "Simon", Surname: "Headley"}
 
 	dataAccess := dataAccess.AccountDataAccess{}
 
 	// Act
-	actualAccount, success := dataAccess.GetAccountDetails(accountID)
+	actualAccount, success := dataAccess.Login(login, password)
 
 	// Assert
 	if !success {

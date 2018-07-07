@@ -47,7 +47,7 @@ func TestCreateAccount_GivenCreateAccountRequest_ShouldReturnAccountsAndSuccessf
 			t.Errorf("Expected FirstName was %s. Actual FirstName was %s", expected.FirstName, actual.FirstName)
 		}
 		if expected.Surname != actual.Surname {
-			t.Errorf("Expected AccountID was %s. Actual AccountID was %s", expected.Surname, actual.Surname)
+			t.Errorf("Expected Surname was %s. Actual Surname was %s", expected.Surname, actual.Surname)
 		}
 		if !reflect.DeepEqual(expected, actual) {
 			t.Error("Deep equal shows struct properties not matching.")
