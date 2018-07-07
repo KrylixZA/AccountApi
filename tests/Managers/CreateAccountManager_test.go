@@ -24,7 +24,7 @@ func TestCreateAccount_GivenValidRequestAndUnsuccessfulResult_ShouldReturn500And
 	expectedStatusCode := http.StatusInternalServerError
 	expectedResponse := responseBuilder.WithCode(3).WithMessage("Internal Server Error.").WithDescription("Failed to create account.").Build()
 
-	mockedAccountDataAccess := mocks.AccountDataAccessMock{
+	mockedAccountDataAccess := &mocks.AccountDataAccessMock{
 		CreateAccountFunc: func(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
 			return nil, false
 		},
