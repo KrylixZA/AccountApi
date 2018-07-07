@@ -8,7 +8,7 @@ import (
 	responses "../Models/Responses"
 )
 
-func Login(dataAccessor interfaces.IAccountDataAccess, login string, password string) (int, []byte) {
+func (manager *AccountManager) Login(dataAccessor interfaces.IAccountDataAccess, login string, password string) (int, []byte) {
 	account, success := dataAccessor.Login(login, password)
 
 	if success {

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	dataAccess "../DataAccess"
-	manager "../Managers"
+	managers "../Managers"
 	"github.com/gorilla/mux"
 )
 
@@ -15,6 +15,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	// Introduce your strategy
 	dataAccess := dataAccess.AccountDataAccess{}
+	manager := managers.AccountManager{}
 	statusCode, response := manager.Login(dataAccess, login, password)
 	w.WriteHeader(statusCode)
 	w.Write(response)

@@ -9,7 +9,7 @@ import (
 	responses "../Models/Responses"
 )
 
-func ResetPassword(dataAccessor interfaces.IAccountDataAccess, request requests.ResetPasswordRequest) (int, []byte) {
+func (manager *AccountManager) ResetPassword(dataAccessor interfaces.IAccountDataAccess, request requests.ResetPasswordRequest) (int, []byte) {
 	account, success := dataAccessor.ResetPassword(request)
 
 	if success {

@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	dataAccess "../DataAccess"
-	manager "../Managers"
+	managers "../Managers"
 	requests "../Models/Requests"
 )
 
@@ -15,6 +15,7 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 
 	// Introduce your strategy
 	dataAccess := dataAccess.AccountDataAccess{}
+	manager := managers.AccountManager{}
 	statusCode, response := manager.CreateAccount(dataAccess, request)
 	w.WriteHeader(statusCode)
 	w.Write(response)

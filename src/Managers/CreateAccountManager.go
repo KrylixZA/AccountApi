@@ -9,7 +9,7 @@ import (
 	responses "../Models/Responses"
 )
 
-func CreateAccount(dataAccessor interfaces.IAccountDataAccess, request requests.CreateAccountRequest) (int, []byte) {
+func (manager *AccountManager) CreateAccount(dataAccessor interfaces.IAccountDataAccess, request requests.CreateAccountRequest) (int, []byte) {
 	accounts, success := dataAccessor.CreateAccount(request)
 
 	if success {

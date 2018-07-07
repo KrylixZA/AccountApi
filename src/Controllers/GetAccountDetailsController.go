@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	dataAccess "../DataAccess"
-	manager "../Managers"
+	managers "../Managers"
 	responses "../Models/Responses"
 	"github.com/gorilla/mux"
 )
@@ -23,6 +23,7 @@ func GetAccountDetails(w http.ResponseWriter, r *http.Request) {
 
 	// Introduce your strategy
 	dataAccess := dataAccess.AccountDataAccess{}
+	manager := managers.AccountManager{}
 	statusCode, response := manager.GetAccountDetails(dataAccess, accountID)
 	w.WriteHeader(statusCode)
 	w.Write(response)

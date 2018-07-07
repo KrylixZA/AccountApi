@@ -8,7 +8,7 @@ import (
 	responses "../Models/Responses"
 )
 
-func GetAccountDetails(dataAccessor interfaces.IAccountDataAccess, accountID int) (int, []byte) {
+func (manager *AccountManager) GetAccountDetails(dataAccessor interfaces.IAccountDataAccess, accountID int) (int, []byte) {
 	account, success := dataAccessor.GetAccountDetails(accountID)
 
 	if success {
