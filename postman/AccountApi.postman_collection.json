@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "5829517c-7261-4933-bf6e-9a4723e9c54c",
+		"name": "AccountApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Account Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dfaaf6e4-73ec-45e0-be8b-a230683611ef",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/account/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/account/headleysj@gmail.com/password1234",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account",
+						"headleysj@gmail.com",
+						"password1234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"KrylixZA\",\n\t\"email\": \"headleysj@gmail.com\",\n\t\"firstName\": \"Simon\",\n\t\"surname\": \"Headley\",\n\t\"password\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountId\": 1,\n\t\"currentPassword\": \"password1234\",\n\t\"newPassword\": \"test1234\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"account"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

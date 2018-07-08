@@ -10,7 +10,7 @@ func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (m
 	setupAccounts()
 
 	newIndex := len(accounts) + 1
-	newAccount := models.Account{AccountID: newIndex, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname}
+	newAccount := models.Account{AccountID: newIndex, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname, Email: request.Email}
 
 	accounts[newIndex] = newAccount
 
