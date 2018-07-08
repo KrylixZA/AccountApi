@@ -8,31 +8,28 @@ import (
 
 	managers "../../src/Managers"
 	models "../../src/Models"
-	requests "../../src/Models/Requests"
 	responses "../../src/Models/Responses"
 	"../TestHelpers/Builders"
 	"../TestHelpers/Mocks"
 )
 
-func TestCreateAccount_GivenUnsuccessfulResult_ShouldReturn500AndErrorResponse(t *testing.T) {
+func TestGetAccountDetails_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t *testing.T) {
 	// Arrange
-	requestBuilder := builders.CreateAccountRequestBuilder{}
+	accountID := -1
+
 	responseBuilder := builders.ErrorResponseBuilder{}
-
-	request := requestBuilder.WithUsername("test@test.com").WithEmail("test@test.com").WithFirstName("Simon").WithSurname("Headley").WithPassword("Test1234").Build()
-
-	expectedStatusCode := http.StatusInternalServerError
-	expectedResponse := responseBuilder.WithCode(3).WithMessage("Internal Server Error.").WithDescription("Failed to create account.").Build()
+	expectedStatusCode := http.StatusNotFound
+	expectedResponse := responseBuilder.WithCode(1).WithMessage("Not found.").WithDescription("No accounts were found with the given identifier and hence no details could be returned.").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
+		GetAccountDetailsFunc: func(accountID int) (*models.Account, bool) {
 			return nil, false
 		},
 	}
 	manager := managers.AccountManager{}
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.CreateAccount(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseByteArray := manager.GetAccountDetails(mockedAccountDataAccess, accountID)
 
 	// Assert
 	var actualResponse responses.ErrorResponse
@@ -55,39 +52,33 @@ func TestCreateAccount_GivenUnsuccessfulResult_ShouldReturn500AndErrorResponse(t
 	}
 }
 
-func TestCreateAccount_GivenSuccessfulResult_ShouldReturn201AndMapOfWithCreatedAccount(t *testing.T) {
+func TestGetAccountDetails_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t *testing.T) {
 	// Arrange
-	requestBuilder := builders.CreateAccountRequestBuilder{}
+	accountID := 1
+
 	accountBuilder := builders.AccountBuilder{}
 
-	request := requestBuilder.WithUsername("test@test.com").WithEmail("test@test.com").WithFirstName("Simon").WithSurname("Headley").WithPassword("Test1234").Build()
-
-	expectedStatusCode := http.StatusCreated
+	expectedStatusCode := http.StatusOK
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
-			accounts := make(map[int]models.Account)
-			accounts[1] = models.Account{AccountID: 1, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname, Email: request.Email}
-			return accounts, true
+		GetAccountDetailsFunc: func(accountID int) (*models.Account, bool) {
+			account := models.Account{AccountID: accountID, Login: "test@test.com", Password: "Test1234", FirstName: "Simon", Surname: "Headley", Email: "test@test.com"}
+			return &account, true
 		},
 	}
 	manager := managers.AccountManager{}
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.CreateAccount(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseByteArray := manager.GetAccountDetails(mockedAccountDataAccess, accountID)
 
 	// Assert
-	var actualResponse map[int]models.Account
-	json.Unmarshal(actualResponseByteArray, &actualResponse)
+	var actualAccount models.Account
+	json.Unmarshal(actualResponseByteArray, &actualAccount)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)
 	}
-	if len(actualResponse) != 1 {
-		t.Errorf("Expected to find 1 entry in map of accounts. Actual count was %d.", len(actualResponse))
-	}
-	actualAccount := actualResponse[1]
 	if expectedAccount.AccountID != actualAccount.AccountID {
 		t.Errorf("Expected AccountID %d. Actual AccountID %d.", expectedAccount.AccountID, actualAccount.AccountID)
 	}
