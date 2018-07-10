@@ -2,21 +2,20 @@ package controllers
 
 import (
 	"encoding/json"
-	"net/http"
 
 	dataAccess "../DataAccess"
 	managers "../Managers"
 	requests "../Models/Requests"
+	"github.com/gin-gonic/gin"
 )
 
-func CreateAccount(w http.ResponseWriter, r *http.Request) {
+func (*AccountController) CreateAccount(ctx *gin.Context) {
 	var request requests.CreateAccountRequest
-	_ = json.NewDecoder(r.Body).Decode(&request)
+	_ = json.NewDecoder(ctx.Request.Body).Decode(&request)
 
 	// Introduce your strategy
 	dataAccess := dataAccess.AccountDataAccess{}
 	manager := managers.AccountManager{}
 	statusCode, response := manager.CreateAccount(dataAccess, request)
-	w.WriteHeader(statusCode)
-	w.Write(response)
+	ctx.JSON(statusCode, response)
 }

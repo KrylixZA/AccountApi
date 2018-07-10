@@ -5,7 +5,7 @@ import (
 	requests "../Models/Requests"
 )
 
-func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
+func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (*models.Account, bool) {
 	// TODO: Replace this setup with a DB call.
 	setupAccounts()
 
@@ -14,5 +14,5 @@ func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (m
 
 	accounts[newIndex] = newAccount
 
-	return accounts, true
+	return &newAccount, true
 }

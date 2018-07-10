@@ -1,7 +1,6 @@
 package managers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	interfaces "../Interfaces"
@@ -9,22 +8,13 @@ import (
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) CreateAccount(dataAccessor interfaces.IAccountDataAccess, request requests.CreateAccountRequest) (int, []byte) {
+func (manager *AccountManager) CreateAccount(dataAccessor interfaces.IAccountDataAccess, request requests.CreateAccountRequest) (int, interface{}) {
 	accounts, success := dataAccessor.CreateAccount(request)
 
 	if success {
-		serializedResponse, err := json.Marshal(accounts)
-		if err != nil {
-			panic(err)
-		}
-
-		return http.StatusCreated, serializedResponse
+		return http.StatusCreated, accounts
 	}
 
 	errorResponse := responses.ErrorResponse{Code: 3, Message: "Internal Server Error.", Description: "Failed to create account."}
-	serializedResponse, err := json.Marshal(errorResponse)
-	if err != nil {
-		panic(err)
-	}
-	return http.StatusInternalServerError, serializedResponse
+	return http.StatusInternalServerError, errorResponse
 }

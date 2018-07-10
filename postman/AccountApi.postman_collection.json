@@ -27,14 +27,17 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8000/account/1",
+					"raw": "http://localhost:8080/api/v1/accounts/id/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
-						"account",
+						"api",
+						"v1",
+						"accounts",
+						"id",
 						"1"
 					]
 				}
@@ -48,15 +51,19 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8000/account/headleysj@gmail.com/password1234",
+					"raw": "http://localhost:8080/api/v1/accounts/login/headleysj@gmail.com/password/password1234",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
-						"account",
+						"api",
+						"v1",
+						"accounts",
+						"login",
 						"headleysj@gmail.com",
+						"password",
 						"password1234"
 					]
 				}
@@ -81,14 +88,16 @@
 					"raw": "{\n\t\"username\": \"KrylixZA\",\n\t\"email\": \"headleysj@gmail.com\",\n\t\"firstName\": \"Simon\",\n\t\"surname\": \"Headley\",\n\t\"password\": \"test\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8000/account",
+					"raw": "http://localhost:8080/api/v1/accounts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
-						"account"
+						"api",
+						"v1",
+						"accounts"
 					]
 				}
 			},
@@ -109,17 +118,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountId\": 1,\n\t\"currentPassword\": \"password1234\",\n\t\"newPassword\": \"test1234\"\n}"
+					"raw": "{\n\t\"currentPassword\": \"password1234\",\n\t\"newPassword\": \"test1234\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8000/account",
+					"raw": "http://localhost:8080/api/v1/accounts/id/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8000",
+					"port": "8080",
 					"path": [
-						"account"
+						"api",
+						"v1",
+						"accounts",
+						"id",
+						"1"
 					]
 				}
 			},

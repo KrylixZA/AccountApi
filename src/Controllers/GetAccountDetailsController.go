@@ -1,23 +1,31 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
 	dataAccess "../DataAccess"
 	managers "../Managers"
 	responses "../Models/Responses"
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
-func GetAccountDetails(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	accountID, error := strconv.Atoi(params["id"])
+// GetAccountDetails exposes functionality to fetch the details of an account once a user has logged in.
+// @Summary Exposes functionality to fetch the details of an account once a user has logged in.
+// @Description Based off the given account identifier in the URI, the account details are looked up.
+// @ID get-string-by-int
+// @Produce json
+// @Param accountId path int true "The account identifier returned on login."
+// @Success 200 {object} models.Account
+// @Failure 404 {object} responses.ErrorResponse
+// @Failure 500 {object} responses.ErrorResponse
+// @Router /accounts/id/{accountId} [get]
+func (*AccountController) GetAccountDetails(ctx *gin.Context) {
+	accountID, error := strconv.Atoi(ctx.Param("accountId"))
 
 	if error != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(responses.ErrorResponse{Code: 2, Message: "Internal Server Error.", Description: "Failed to convert the parameter to an integer."})
+		errorResponse := responses.ErrorResponse{Code: 2, Message: "Internal Server Error.", Description: "Failed to convert the parameter to an integer."}
+		ctx.JSON(http.StatusInternalServerError, errorResponse)
 		return
 	}
 
@@ -25,6 +33,5 @@ func GetAccountDetails(w http.ResponseWriter, r *http.Request) {
 	dataAccess := dataAccess.AccountDataAccess{}
 	manager := managers.AccountManager{}
 	statusCode, response := manager.GetAccountDetails(dataAccess, accountID)
-	w.WriteHeader(statusCode)
-	w.Write(response)
+	ctx.JSON(statusCode, response)
 }

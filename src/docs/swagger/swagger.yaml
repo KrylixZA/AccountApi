@@ -1,0 +1,66 @@
+basePath: /api/v1
+definitions:
+  models.Account:
+    properties:
+      accountId:
+        type: integer
+      email:
+        type: string
+      firstName:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
+      surname:
+        type: string
+    type: object
+  responses.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      description:
+        type: string
+      message:
+        type: string
+    type: object
+host: localhost
+info:
+  contact: {}
+  description: Provides basic functionality to perform operations against accounts.
+  license: {}
+  title: Account API
+  version: 1.0.0
+paths:
+  /accounts/id/{accountId}:
+    get:
+      description: Based off the given account identifier in the URI, the account
+        details are looked up.
+      operationId: get-string-by-int
+      parameters:
+      - description: The account identifier returned on login.
+        in: path
+        name: accountId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Account'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
+            type: object
+      summary: Exposes functionality to fetch the details of an account once a user
+        has logged in.
+swagger: "2.0"

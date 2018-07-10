@@ -1,7 +1,6 @@
 package managers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	interfaces "../Interfaces"
@@ -9,22 +8,13 @@ import (
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) ResetPassword(dataAccessor interfaces.IAccountDataAccess, request requests.ResetPasswordRequest) (int, []byte) {
-	account, success := dataAccessor.ResetPassword(request)
+func (manager *AccountManager) ResetPassword(dataAccessor interfaces.IAccountDataAccess, accountID int, request requests.ResetPasswordRequest) (int, interface{}) {
+	account, success := dataAccessor.ResetPassword(accountID, request)
 
 	if success {
-		serializedResponse, err := json.Marshal(account)
-		if err != nil {
-			panic(err)
-		}
-
-		return http.StatusOK, serializedResponse
+		return http.StatusOK, account
 	}
 
 	errorResponse := responses.ErrorResponse{Code: 4, Message: "Not found.", Description: "Failed to reset account password. Could not find account to reset the password for."}
-	serializedResponse, err := json.Marshal(errorResponse)
-	if err != nil {
-		panic(err)
-	}
-	return http.StatusNotFound, serializedResponse
+	return http.StatusNotFound, errorResponse
 }
