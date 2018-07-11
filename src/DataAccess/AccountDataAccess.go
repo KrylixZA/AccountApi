@@ -13,3 +13,7 @@ func setupAccounts() {
 
 type AccountDataAccess struct {
 }
+
+func NewAccountDataAccess() *AccountDataAccess {
+	return &AccountDataAccess{}
+}

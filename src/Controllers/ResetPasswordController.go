@@ -5,14 +5,12 @@ import (
 	"net/http"
 	"strconv"
 
-	dataAccess "../DataAccess"
-	managers "../Managers"
 	requests "../Models/Requests"
 	responses "../Models/Responses"
 	"github.com/gin-gonic/gin"
 )
 
-func (*AccountController) ResetPassword(ctx *gin.Context) {
+func (controller *AccountController) ResetPassword(ctx *gin.Context) {
 	accountID, error := strconv.Atoi(ctx.Param("accountId"))
 
 	if error != nil {
@@ -24,9 +22,6 @@ func (*AccountController) ResetPassword(ctx *gin.Context) {
 	var request requests.ResetPasswordRequest
 	_ = json.NewDecoder(ctx.Request.Body).Decode(&request)
 
-	// Introduce your strategy
-	dataAccess := dataAccess.AccountDataAccess{}
-	manager := managers.AccountManager{}
-	statusCode, response := manager.ResetPassword(dataAccess, accountID, request)
+	statusCode, response := controller.AccountManager.ResetPassword(accountID, request)
 	ctx.JSON(statusCode, response)
 }

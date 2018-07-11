@@ -3,13 +3,12 @@ package managers
 import (
 	"net/http"
 
-	interfaces "../Interfaces"
 	requests "../Models/Requests"
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) ResetPassword(dataAccessor interfaces.IAccountDataAccess, accountID int, request requests.ResetPasswordRequest) (int, interface{}) {
-	account, success := dataAccessor.ResetPassword(accountID, request)
+func (manager *AccountManager) ResetPassword(accountID int, request requests.ResetPasswordRequest) (int, interface{}) {
+	account, success := manager.DataAccess.ResetPassword(accountID, request)
 
 	if success {
 		return http.StatusOK, account

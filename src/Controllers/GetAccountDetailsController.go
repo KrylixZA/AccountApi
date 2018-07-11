@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	dataAccess "../DataAccess"
-	managers "../Managers"
 	responses "../Models/Responses"
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +18,7 @@ import (
 // @Failure 404 {object} responses.ErrorResponse
 // @Failure 500 {object} responses.ErrorResponse
 // @Router /accounts/id/{accountId} [get]
-func (*AccountController) GetAccountDetails(ctx *gin.Context) {
+func (controller *AccountController) GetAccountDetails(ctx *gin.Context) {
 	accountID, error := strconv.Atoi(ctx.Param("accountId"))
 
 	if error != nil {
@@ -29,9 +27,6 @@ func (*AccountController) GetAccountDetails(ctx *gin.Context) {
 		return
 	}
 
-	// Introduce your strategy
-	dataAccess := dataAccess.AccountDataAccess{}
-	manager := managers.AccountManager{}
-	statusCode, response := manager.GetAccountDetails(dataAccess, accountID)
+	statusCode, response := controller.AccountManager.GetAccountDetails(accountID)
 	ctx.JSON(statusCode, response)
 }

@@ -3,12 +3,11 @@ package managers
 import (
 	"net/http"
 
-	interfaces "../Interfaces"
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) Login(dataAccessor interfaces.IAccountDataAccess, login string, password string) (int, interface{}) {
-	account, success := dataAccessor.Login(login, password)
+func (manager *AccountManager) Login(login string, password string) (int, interface{}) {
+	account, success := manager.DataAccess.Login(login, password)
 
 	if success {
 		return http.StatusOK, account

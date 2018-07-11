@@ -1,8 +1,12 @@
 package controllers
 
+import "../Interfaces"
+
 type AccountController struct {
+	AccountManager interfaces.IAccountManager
 }
 
-func NewController() *AccountController {
-	return &AccountController{}
+// do injection of manager interface here.
+func NewController(manager interfaces.IAccountManager) *AccountController {
+	return &AccountController{AccountManager: manager}
 }

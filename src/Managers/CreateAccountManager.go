@@ -3,13 +3,12 @@ package managers
 import (
 	"net/http"
 
-	interfaces "../Interfaces"
 	requests "../Models/Requests"
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) CreateAccount(dataAccessor interfaces.IAccountDataAccess, request requests.CreateAccountRequest) (int, interface{}) {
-	accounts, success := dataAccessor.CreateAccount(request)
+func (manager *AccountManager) CreateAccount(request requests.CreateAccountRequest) (int, interface{}) {
+	accounts, success := manager.DataAccess.CreateAccount(request)
 
 	if success {
 		return http.StatusCreated, accounts

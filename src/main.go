@@ -14,13 +14,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	dataAccess "../src/DataAccess"
+	managers "../src/Managers"
 )
 
 func main() {
 	r := gin.Default()
 
-	accountController := ctrls.NewController()
-
+	// introduce your strategy here.
+	dataAccess := dataAccess.NewAccountDataAccess()
+	manager := managers.NewAccountManager(dataAccess)
+	accountController := ctrls.NewController(manager)
 	v1 := r.Group("/api/v1")
 	{
 		accounts := v1.Group("/accounts")

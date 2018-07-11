@@ -3,12 +3,11 @@ package managers
 import (
 	"net/http"
 
-	interfaces "../Interfaces"
 	responses "../Models/Responses"
 )
 
-func (manager *AccountManager) GetAccountDetails(dataAccessor interfaces.IAccountDataAccess, accountID int) (int, interface{}) {
-	account, success := dataAccessor.GetAccountDetails(accountID)
+func (manager *AccountManager) GetAccountDetails(accountID int) (int, interface{}) {
+	account, success := manager.DataAccess.GetAccountDetails(accountID)
 
 	if success {
 		return http.StatusOK, account
