@@ -24,21 +24,45 @@ definitions:
       message:
         type: string
     type: object
-host: localhost
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: headleysj@gmail.com
+    name: Simon Headley
+    url: None
   description: Provides basic functionality to perform operations against accounts.
-  license: {}
+  license:
+    name: None
+    url: None
   title: Account API
   version: 1.0.0
 paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Creates an account for a new user if the account doesn't already
+        exist.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Account'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
+            type: object
+      summary: Exposes functionality to create a new account.
   /accounts/id/{accountId}:
     get:
       description: Based off the given account identifier in the URI, the account
         details are looked up.
-      operationId: get-string-by-int
       parameters:
-      - description: The account identifier returned on login.
+      - description: The user's account identifier returned on login.
         in: path
         name: accountId
         required: true

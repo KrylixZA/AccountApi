@@ -3,13 +3,48 @@
     "info": {
         "description": "Provides basic functionality to perform operations against accounts.",
         "title": "Account API",
-        "contact": {},
-        "license": {},
+        "contact": {
+            "name": "Simon Headley",
+            "url": "None",
+            "email": "headleysj@gmail.com"
+        },
+        "license": {
+            "name": "None",
+            "url": "None"
+        },
         "version": "1.0.0"
     },
-    "host": "localhost",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
+        "/accounts": {
+            "post": {
+                "description": "Creates an account for a new user if the account doesn't already exist.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Exposes functionality to create a new account.",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/models.Account"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/responses.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/accounts/id/{accountId}": {
             "get": {
                 "description": "Based off the given account identifier in the URI, the account details are looked up.",
@@ -17,11 +52,10 @@
                     "application/json"
                 ],
                 "summary": "Exposes functionality to fetch the details of an account once a user has logged in.",
-                "operationId": "get-string-by-int",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "The account identifier returned on login.",
+                        "description": "The user's account identifier returned on login.",
                         "name": "accountId",
                         "in": "path",
                         "required": true
