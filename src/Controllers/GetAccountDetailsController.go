@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	responses "../Models/Responses"
+	"../Models/Responses"
 	"github.com/gin-gonic/gin"
 )
 

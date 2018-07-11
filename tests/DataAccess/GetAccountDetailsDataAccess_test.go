@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	builders "../TestHelpers/Builders"
+	"../TestHelpers/Builders"
 )
 
 func TestGetAccountGetails_GivenAccountIdNotInMap_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {

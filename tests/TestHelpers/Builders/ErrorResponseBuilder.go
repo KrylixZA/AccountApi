@@ -1,6 +1,6 @@
 package builders
 
-import responses "../../../src/Models/Responses"
+import "../../../src/Models/Responses"
 
 type ErrorResponseBuilder struct {
 	Code        int

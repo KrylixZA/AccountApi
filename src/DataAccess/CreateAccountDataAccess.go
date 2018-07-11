@@ -1,8 +1,8 @@
 package dataaccess
 
 import (
-	models "../Models"
-	requests "../Models/Requests"
+	"../Models"
+	"../Models/Requests"
 )
 
 func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (*models.Account, bool) {

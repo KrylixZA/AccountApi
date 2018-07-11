@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	requests "../Models/Requests"
-	responses "../Models/Responses"
+	"../Models/Requests"
+	"../Models/Responses"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	builders "../TestHelpers/Builders"
+	"../TestHelpers/Builders"
 )
 
 func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {

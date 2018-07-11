@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	models "../Models"
-	requests "../Models/Requests"
+	"../Models"
+	"../Models/Requests"
 )
 
 type IAccountDataAccess interface {

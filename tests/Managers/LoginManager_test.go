@@ -1,14 +1,12 @@
 package managers
 
 import (
-	"encoding/json"
 	"net/http"
 	"reflect"
 	"testing"
 
-	managers "../../src/Managers"
-	models "../../src/Models"
-	responses "../../src/Models/Responses"
+	"../../src/Models"
+	"../../src/Models/Responses"
 	"../TestHelpers/Builders"
 	"../TestHelpers/Mocks"
 )
@@ -27,14 +25,13 @@ func TestLogin_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t *testin
 			return nil, false
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.Login(mockedAccountDataAccess, login, password)
+	actualStatusCode, actualResponseInterface := manager.Login(login, password)
 
 	// Assert
-	var actualResponse responses.ErrorResponse
-	json.Unmarshal(actualResponseByteArray, &actualResponse)
+	actualResponse := actualResponseInterface.(*responses.ErrorResponse)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status code was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)
@@ -69,14 +66,13 @@ func TestLogin_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t *testing
 			return &account, true
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.Login(mockedAccountDataAccess, login, password)
+	actualStatusCode, actualResponseInterface := manager.Login(login, password)
 
 	// Assert
-	var actualAccount models.Account
-	json.Unmarshal(actualResponseByteArray, &actualAccount)
+	actualAccount := actualResponseInterface.(*models.Account)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)

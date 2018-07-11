@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	requests "../Models/Requests"
+	"../Models/Requests"
 )
 
 type IAccountManager interface {

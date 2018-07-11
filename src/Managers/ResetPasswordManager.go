@@ -3,8 +3,8 @@ package managers
 import (
 	"net/http"
 
-	requests "../Models/Requests"
-	responses "../Models/Responses"
+	"../Models/Requests"
+	"../Models/Responses"
 )
 
 func (manager *AccountManager) ResetPassword(accountID int, request requests.ResetPasswordRequest) (int, interface{}) {
@@ -14,6 +14,6 @@ func (manager *AccountManager) ResetPassword(accountID int, request requests.Res
 		return http.StatusOK, account
 	}
 
-	errorResponse := responses.ErrorResponse{Code: 4, Message: "Not found.", Description: "Failed to reset account password. Could not find account to reset the password for."}
+	errorResponse := &responses.ErrorResponse{Code: 4, Message: "Not found.", Description: "Failed to reset account password. Could not find account to reset the password for."}
 	return http.StatusNotFound, errorResponse
 }

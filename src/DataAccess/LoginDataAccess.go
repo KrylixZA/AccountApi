@@ -1,6 +1,6 @@
 package dataaccess
 
-import models "../Models"
+import "../Models"
 
 func (AccountDataAccess) Login(login string, password string) (*models.Account, bool) {
 	// TODO: Replace this setup with a DB call.

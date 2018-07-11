@@ -1,6 +1,6 @@
 package managers
 
-import interfaces "../Interfaces"
+import "../Interfaces"
 
 type AccountManager struct {
 	DataAccess interfaces.IAccountDataAccess

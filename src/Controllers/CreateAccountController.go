@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 
-	requests "../Models/Requests"
+	"../Models/Requests"
 	"github.com/gin-gonic/gin"
 )
 

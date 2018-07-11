@@ -1,15 +1,13 @@
 package managers
 
 import (
-	"encoding/json"
 	"net/http"
 	"reflect"
 	"testing"
 
-	managers "../../src/Managers"
-	models "../../src/Models"
-	requests "../../src/Models/Requests"
-	responses "../../src/Models/Responses"
+	"../../src/Models"
+	"../../src/Models/Requests"
+	"../../src/Models/Responses"
 	"../TestHelpers/Builders"
 	"../TestHelpers/Mocks"
 )
@@ -19,7 +17,7 @@ func TestResetPassword_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t
 	responseBuilder := builders.ErrorResponseBuilder{}
 	requestBuilder := builders.ResetPasswordRequestBuilder{}
 
-	request := requestBuilder.WithAccountID(1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
+	request := requestBuilder.WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	expectedStatusCode := http.StatusNotFound
 	expectedResponse := responseBuilder.WithCode(4).WithMessage("Not found.").WithDescription("Failed to reset account password. Could not find account to reset the password for.").Build()
@@ -29,14 +27,13 @@ func TestResetPassword_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t
 			return nil, false
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.ResetPassword(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, *request)
 
 	// Assert
-	var actualResponse responses.ErrorResponse
-	json.Unmarshal(actualResponseByteArray, &actualResponse)
+	actualResponse := actualResponseInterface.(*responses.ErrorResponse)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status code was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)
@@ -60,7 +57,7 @@ func TestResetPassword_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t 
 	requestBuilder := builders.ResetPasswordRequestBuilder{}
 	accountBuilder := builders.AccountBuilder{}
 
-	request := requestBuilder.WithAccountID(1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
+	request := requestBuilder.WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	expectedStatusCode := http.StatusOK
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
@@ -71,14 +68,13 @@ func TestResetPassword_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t 
 			return &account, true
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.ResetPassword(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, *request)
 
 	// Assert
-	var actualAccount models.Account
-	json.Unmarshal(actualResponseByteArray, &actualAccount)
+	actualAccount := actualResponseInterface.(*models.Account)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)

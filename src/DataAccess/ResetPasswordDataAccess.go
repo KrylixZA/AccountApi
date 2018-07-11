@@ -1,8 +1,8 @@
 package dataaccess
 
 import (
-	models "../Models"
-	requests "../Models/Requests"
+	"../Models"
+	"../Models/Requests"
 )
 
 func (AccountDataAccess) ResetPassword(accountID int, request requests.ResetPasswordRequest) (*models.Account, bool) {

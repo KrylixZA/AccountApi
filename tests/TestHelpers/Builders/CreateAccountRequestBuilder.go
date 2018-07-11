@@ -1,6 +1,6 @@
 package builders
 
-import requests "../../../src/Models/Requests"
+import "../../../src/Models/Requests"
 
 type CreateAccountRequestBuilder struct {
 	Username  string

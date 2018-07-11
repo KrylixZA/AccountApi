@@ -3,7 +3,7 @@ package managers
 import (
 	"net/http"
 
-	responses "../Models/Responses"
+	"../Models/Responses"
 )
 
 func (manager *AccountManager) Login(login string, password string) (int, interface{}) {
@@ -13,6 +13,6 @@ func (manager *AccountManager) Login(login string, password string) (int, interf
 		return http.StatusOK, account
 	}
 
-	errorResponse := responses.ErrorResponse{Code: 1, Message: "Not found.", Description: "Login failed as no account was found with the given login and password."}
+	errorResponse := &responses.ErrorResponse{Code: 1, Message: "Not found.", Description: "Login failed as no account was found with the given login and password."}
 	return http.StatusNotFound, errorResponse
 }

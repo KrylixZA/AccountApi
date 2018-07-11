@@ -1,15 +1,13 @@
 package managers
 
 import (
-	"encoding/json"
 	"net/http"
 	"reflect"
 	"testing"
 
-	managers "../../src/Managers"
-	models "../../src/Models"
-	requests "../../src/Models/Requests"
-	responses "../../src/Models/Responses"
+	"../../src/Models"
+	"../../src/Models/Requests"
+	"../../src/Models/Responses"
 	"../TestHelpers/Builders"
 	"../TestHelpers/Mocks"
 )
@@ -25,18 +23,17 @@ func TestCreateAccount_GivenUnsuccessfulResult_ShouldReturn500AndErrorResponse(t
 	expectedResponse := responseBuilder.WithCode(3).WithMessage("Internal Server Error.").WithDescription("Failed to create account.").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
+		CreateAccountFunc: func(request requests.CreateAccountRequest) (*models.Account, bool) {
 			return nil, false
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.CreateAccount(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseInterface := manager.CreateAccount(*request)
 
 	// Assert
-	var actualResponse responses.ErrorResponse
-	json.Unmarshal(actualResponseByteArray, &actualResponse)
+	actualResponse := actualResponseInterface.(*responses.ErrorResponse)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status code was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)
@@ -66,28 +63,22 @@ func TestCreateAccount_GivenSuccessfulResult_ShouldReturn201AndMapOfWithCreatedA
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (map[int]models.Account, bool) {
-			accounts := make(map[int]models.Account)
-			accounts[1] = models.Account{AccountID: 1, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname, Email: request.Email}
-			return accounts, true
+		CreateAccountFunc: func(request requests.CreateAccountRequest) (*models.Account, bool) {
+			account := models.Account{AccountID: 1, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname, Email: request.Email}
+			return &account, true
 		},
 	}
-	manager := managers.AccountManager{}
+	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseByteArray := manager.CreateAccount(mockedAccountDataAccess, request)
+	actualStatusCode, actualResponseInterface := manager.CreateAccount(*request)
 
 	// Assert
-	var actualResponse map[int]models.Account
-	json.Unmarshal(actualResponseByteArray, &actualResponse)
+	actualAccount := actualResponseInterface.(*models.Account)
 
 	if expectedStatusCode != actualStatusCode {
 		t.Errorf("Expected HTTP status was %d. Actual HTTP status code was %d.", expectedStatusCode, actualStatusCode)
 	}
-	if len(actualResponse) != 1 {
-		t.Errorf("Expected to find 1 entry in map of accounts. Actual count was %d.", len(actualResponse))
-	}
-	actualAccount := actualResponse[1]
 	if expectedAccount.AccountID != actualAccount.AccountID {
 		t.Errorf("Expected AccountID %d. Actual AccountID %d.", expectedAccount.AccountID, actualAccount.AccountID)
 	}

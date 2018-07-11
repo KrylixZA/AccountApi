@@ -1,7 +1,7 @@
 package dataaccess
 
 import (
-	models "../Models"
+	"../Models"
 )
 
 type AccountDataAccess struct {
