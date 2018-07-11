@@ -4,19 +4,18 @@ import (
 	"reflect"
 	"testing"
 
-	dataAccess "../../src/DataAccess"
 	"../TestHelpers/Builders"
 )
 
 func TestResetPassword_GivenRequestWithIncorrectAccountIdAndIncorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
 	builder := builders.ResetPasswordRequestBuilder{}
-	request := builder.WithAccountID(-1).WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
+	request := builder.WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(request)
+	actualAccount, success := dataAccess.ResetPassword(-1, *request)
 
 	// Assert
 	if success {
@@ -30,12 +29,12 @@ func TestResetPassword_GivenRequestWithIncorrectAccountIdAndIncorrectCurrentPass
 func TestResetPassword_GivenRequestWithIncorrectAccountIdAndCorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
 	builder := builders.ResetPasswordRequestBuilder{}
-	request := builder.WithAccountID(-1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
+	request := builder.WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(request)
+	actualAccount, success := dataAccess.ResetPassword(-1, *request)
 
 	// Assert
 	if success {
@@ -49,12 +48,12 @@ func TestResetPassword_GivenRequestWithIncorrectAccountIdAndCorrectCurrentPasswo
 func TestResetPassword_GivenRequestWithCorrectAccountIdAndIncorrectCurrentPassword_ShouldReturnNilAndUnsuccessfulResult(t *testing.T) {
 	// Arrange
 	builder := builders.ResetPasswordRequestBuilder{}
-	request := builder.WithAccountID(1).WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
+	request := builder.WithCurrentPassword("test1234").WithNewPassword("test1234").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(request)
+	actualAccount, success := dataAccess.ResetPassword(1, *request)
 
 	// Assert
 	if success {
@@ -68,15 +67,15 @@ func TestResetPassword_GivenRequestWithCorrectAccountIdAndIncorrectCurrentPasswo
 func TestResetPassword_GivenRequestWithCorrectAccountIdAndCorrectCurrentPassword_ShouldReturnAccountAndSuccessfulResult(t *testing.T) {
 	// Arrange
 	requestBuilder := builders.ResetPasswordRequestBuilder{}
-	request := requestBuilder.WithAccountID(1).WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
+	request := requestBuilder.WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	accountBuilder := builders.AccountBuilder{}
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("headleysj@gmail.com").WithPassword("test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("headleysj@gmail.com").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(request)
+	actualAccount, success := dataAccess.ResetPassword(1, *request)
 
 	// Assert
 	if !success {
@@ -100,7 +99,7 @@ func TestResetPassword_GivenRequestWithCorrectAccountIdAndCorrectCurrentPassword
 	if expectedAccount.Email != actualAccount.Email {
 		t.Errorf("Expected Email was %s. Actual Email was %s.", expectedAccount.Email, actualAccount.Email)
 	}
-	if !reflect.DeepEqual(&expectedAccount, actualAccount) {
+	if !reflect.DeepEqual(expectedAccount, actualAccount) {
 		t.Error("Deep equal shows structs are not matching.")
 	}
 }

@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"testing"
 
-	dataAccess "../../src/DataAccess"
 	builders "../TestHelpers/Builders"
 )
 
@@ -12,7 +11,7 @@ func TestGetAccountGetails_GivenAccountIdNotInMap_ShouldReturnNilAndUnsuccessful
 	// Arrange
 	accountID := 2
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	account, success := dataAccess.GetAccountDetails(accountID)
@@ -33,7 +32,7 @@ func TestGetAccountDetails_GivenAccountIdInMap_ShouldReturnAccountAndSuccessfulR
 	accountBuilder := builders.AccountBuilder{}
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("headleysj@gmail.com").WithPassword("password1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("headleysj@gmail.com").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	actualAccount, success := dataAccess.GetAccountDetails(accountID)
@@ -60,7 +59,7 @@ func TestGetAccountDetails_GivenAccountIdInMap_ShouldReturnAccountAndSuccessfulR
 	if expectedAccount.Email != actualAccount.Email {
 		t.Errorf("Expected Email was %s. Actual Email was %s.", expectedAccount.Email, actualAccount.Email)
 	}
-	if !reflect.DeepEqual(&expectedAccount, actualAccount) {
+	if !reflect.DeepEqual(expectedAccount, actualAccount) {
 		t.Error("Deep equal shows structs are not matching.")
 	}
 }

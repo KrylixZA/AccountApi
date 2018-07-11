@@ -23,6 +23,6 @@ func (builder *ErrorResponseBuilder) WithDescription(description string) *ErrorR
 	return builder
 }
 
-func (builder *ErrorResponseBuilder) Build() responses.ErrorResponse {
-	return responses.ErrorResponse{Code: builder.Code, Message: builder.Message, Description: builder.Description}
+func (builder *ErrorResponseBuilder) Build() *responses.ErrorResponse {
+	return &responses.ErrorResponse{Code: builder.Code, Message: builder.Message, Description: builder.Description}
 }

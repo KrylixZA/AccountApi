@@ -35,6 +35,6 @@ func (builder *CreateAccountRequestBuilder) WithPassword(password string) *Creat
 	return builder
 }
 
-func (builder *CreateAccountRequestBuilder) Build() requests.CreateAccountRequest {
-	return requests.CreateAccountRequest{Username: builder.Username, Email: builder.Email, FirstName: builder.FirstName, Surname: builder.Surname, Password: builder.Password}
+func (builder *CreateAccountRequestBuilder) Build() *requests.CreateAccountRequest {
+	return &requests.CreateAccountRequest{Username: builder.Username, Email: builder.Email, FirstName: builder.FirstName, Surname: builder.Surname, Password: builder.Password}
 }

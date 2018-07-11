@@ -41,6 +41,6 @@ func (builder *AccountBuilder) WithEmail(email string) *AccountBuilder {
 	return builder
 }
 
-func (builder *AccountBuilder) Build() models.Account {
-	return models.Account{AccountID: builder.AccountID, Login: builder.Login, Password: builder.Password, FirstName: builder.FirstName, Surname: builder.Surname, Email: builder.Email}
+func (builder *AccountBuilder) Build() *models.Account {
+	return &models.Account{AccountID: builder.AccountID, Login: builder.Login, Password: builder.Password, FirstName: builder.FirstName, Surname: builder.Surname, Email: builder.Email}
 }

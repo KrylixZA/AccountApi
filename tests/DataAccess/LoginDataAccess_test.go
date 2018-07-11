@@ -4,7 +4,6 @@ import (
 	"reflect"
 	"testing"
 
-	dataAccess "../../src/DataAccess"
 	builders "../TestHelpers/Builders"
 )
 
@@ -13,7 +12,7 @@ func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsucce
 	login := "someBadLogin"
 	password := "someBadPassword"
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	actualAccount, success := dataAccess.Login(login, password)
@@ -32,7 +31,7 @@ func TestLogin_GivenIncorrectLoginAndCorrectPassword_ShouldReturnNilAndUnsuccess
 	login := "someBadLogin"
 	password := "password1234"
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	actualAccount, success := dataAccess.Login(login, password)
@@ -51,7 +50,7 @@ func TestLogin_GivenCorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccess
 	login := "headleysj@gmail.com"
 	password := "someBadPassword"
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	actualAccount, success := dataAccess.Login(login, password)
@@ -73,7 +72,7 @@ func TestLogin_GivenCorrectLoginAndCorrectPassword_ShouldReturnAccountAndSuccess
 	accountBuilder := builders.AccountBuilder{}
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("headleysj@gmail.com").WithPassword("password1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("headleysj@gmail.com").Build()
 
-	dataAccess := dataAccess.AccountDataAccess{}
+	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
 	actualAccount, success := dataAccess.Login(login, password)
@@ -100,7 +99,7 @@ func TestLogin_GivenCorrectLoginAndCorrectPassword_ShouldReturnAccountAndSuccess
 	if expectedAccount.Email != actualAccount.Email {
 		t.Errorf("Expected Email was %s. Actual Email was %s.", expectedAccount.Email, actualAccount.Email)
 	}
-	if !reflect.DeepEqual(&expectedAccount, actualAccount) {
+	if !reflect.DeepEqual(expectedAccount, actualAccount) {
 		t.Error("Deep equal shows structs are not matching.")
 	}
 }
