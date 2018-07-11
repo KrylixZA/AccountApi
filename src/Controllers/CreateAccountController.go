@@ -12,6 +12,7 @@ import (
 // @Description Creates an account for a new user if the account doesn't already exist.
 // @Accept json
 // @Produce json
+// @Param createAccountRequest body requests.CreateAccountRequest true "The payload require to create the account."
 // @Success 201 {object} models.Account
 // @Failure 500 {object} responses.ErrorResponse
 // @Router /accounts [post]

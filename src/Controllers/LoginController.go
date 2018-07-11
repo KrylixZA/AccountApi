@@ -10,10 +10,11 @@ import (
 // @Login login
 // @Password password
 // @Param login path string true "The user's login."
-// @Param password path string true "THe user's password that belongs to the login."
+// @Param password path string true "The user's password that belongs to the login."
 // @Success 200 {object} models.Account
 // @Failure 404 {object} responses.ErrorResponse
 // @Failure 500 {object} responses.ErrorResponse
+// @Router /accounts/login/{login}/password/{password} [get]
 func (controller *AccountController) Login(ctx *gin.Context) {
 	login := ctx.Param("login")
 	password := ctx.Param("password")

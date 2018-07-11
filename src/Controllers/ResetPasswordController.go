@@ -15,9 +15,11 @@ import (
 // @Description Based on the account identifier and the current password, the system will attempt to update the user's password.
 // @AccountID accountId
 // @Param accountId path string true "The user's account identifier."
+// @Param resetPasswordRequest body requests.ResetPasswordRequest true "The payload containing the existing password and the new password to be updated."
 // @Success 200 {object} models.Account
 // @Failure 404 {object} responses.ErrorResponse
 // @Failure 500 {object} responses.ErrorResponse
+// @Router /accounts/id/{accountId} [patch]
 func (controller *AccountController) ResetPassword(ctx *gin.Context) {
 	accountID, error := strconv.Atoi(ctx.Param("accountId"))
 
