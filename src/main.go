@@ -22,10 +22,12 @@ import (
 
 	"../src/DataAccess"
 	"../src/Managers"
+
+	_ "./docs"
 )
 
 func main() {
-	r := gin.Default()
+	r := gin.New()
 
 	// TO UPDATE SWAGGO: /Users/headleysj/go/bin/swag
 
