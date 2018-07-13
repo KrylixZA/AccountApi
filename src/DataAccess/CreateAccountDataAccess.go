@@ -5,7 +5,7 @@ import (
 	"../Models/Requests"
 )
 
-func (AccountDataAccess) CreateAccount(request requests.CreateAccountRequest) (*models.Account, bool) {
+func (AccountDataAccess) CreateAccount(request *requests.CreateAccountRequest) (*models.Account, bool) {
 	// TODO: Replace this setup with a DB call.
 	setupAccounts()
 

@@ -3,17 +3,21 @@ package managers
 import (
 	"net/http"
 
+	"../Diagnostics"
 	"../Models/Requests"
 	"../Models/Responses"
 )
 
-func (manager *AccountManager) CreateAccount(request requests.CreateAccountRequest) (int, interface{}) {
+func (manager *AccountManager) CreateAccount(request *requests.CreateAccountRequest) (int, interface{}) {
 	account, success := manager.DataAccess.CreateAccount(request)
 
-	if success {
-		return http.StatusCreated, account
+	if !success {
+		errorCode := diagnostics.FailedToCreateAccount
+		errorMessage := "Internal server error."
+		errorDescription := diagnostics.GetErrorDescription(errorCode)
+		errorResponse := responses.ErrorResponse{Code: errorCode, Message: errorMessage, Description: errorDescription}
+		return http.StatusInternalServerError, errorResponse
 	}
 
-	errorResponse := &responses.ErrorResponse{Code: 3, Message: "Internal Server Error.", Description: "Failed to create account."}
-	return http.StatusInternalServerError, errorResponse
+	return http.StatusCreated, account
 }

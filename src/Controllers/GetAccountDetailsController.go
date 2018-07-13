@@ -27,6 +27,6 @@ func (controller *AccountController) GetAccountDetails(ctx *gin.Context) {
 		return
 	}
 
-	statusCode, response := controller.AccountManager.GetAccountDetails(accountID)
+	statusCode, response := controller.accountManager.GetAccountDetails(accountID)
 	ctx.JSON(statusCode, response)
 }

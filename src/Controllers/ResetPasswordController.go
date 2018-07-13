@@ -17,6 +17,7 @@ import (
 // @Param accountId path string true "The user's account identifier."
 // @Param resetPasswordRequest body requests.ResetPasswordRequest true "The payload containing the existing password and the new password to be updated."
 // @Success 200 {object} models.Account
+// @Failure 400 {object} responses.ErrorResponse
 // @Failure 404 {object} responses.ErrorResponse
 // @Failure 500 {object} responses.ErrorResponse
 // @Router /accounts/id/{accountId} [patch]
@@ -32,6 +33,13 @@ func (controller *AccountController) ResetPassword(ctx *gin.Context) {
 	var request requests.ResetPasswordRequest
 	_ = json.NewDecoder(ctx.Request.Body).Decode(&request)
 
-	statusCode, response := controller.AccountManager.ResetPassword(accountID, request)
+	validRequest, errorResponse := controller.requestValidation.ValidateResetPasswordRequest(&request)
+	if !validRequest {
+		statusCode := http.StatusBadRequest
+		ctx.JSON(statusCode, errorResponse)
+		return
+	}
+
+	statusCode, response := controller.accountManager.ResetPassword(accountID, &request)
 	ctx.JSON(statusCode, response)
 }

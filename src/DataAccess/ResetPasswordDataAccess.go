@@ -5,7 +5,7 @@ import (
 	"../Models/Requests"
 )
 
-func (AccountDataAccess) ResetPassword(accountID int, request requests.ResetPasswordRequest) (*models.Account, bool) {
+func (AccountDataAccess) ResetPassword(accountID int, request *requests.ResetPasswordRequest) (*models.Account, bool) {
 	// TODO: Replace this setup with a DB call.
 	setupAccounts()
 

@@ -22,19 +22,21 @@ import (
 
 	"../src/DataAccess"
 	"../src/Managers"
+	"../src/Validation"
 
 	_ "./docs"
 )
 
 func main() {
-	r := gin.New()
+	r := gin.Default()
 
 	// TO UPDATE SWAGGO: /Users/headleysj/go/bin/swag
 
 	// introduce your strategy here.
 	dataAccess := dataaccess.NewAccountDataAccess()
 	manager := managers.NewAccountManager(dataAccess)
-	accountController := controllers.NewController(manager)
+	validation := validation.NewValidation()
+	accountController := controllers.NewController(manager, validation)
 	v1 := r.Group("/api/v1")
 	{
 		accounts := v1.Group("/accounts")

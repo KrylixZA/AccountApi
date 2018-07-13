@@ -3,17 +3,21 @@ package managers
 import (
 	"net/http"
 
+	"../Diagnostics"
 	"../Models/Requests"
 	"../Models/Responses"
 )
 
-func (manager *AccountManager) ResetPassword(accountID int, request requests.ResetPasswordRequest) (int, interface{}) {
+func (manager *AccountManager) ResetPassword(accountID int, request *requests.ResetPasswordRequest) (int, interface{}) {
 	account, success := manager.DataAccess.ResetPassword(accountID, request)
 
-	if success {
-		return http.StatusOK, account
+	if !success {
+		errorCode := diagnostics.ResetPasswordFailed
+		errorMessage := "Not found."
+		errorDescription := diagnostics.GetErrorDescription(errorCode)
+		errorResponse := responses.ErrorResponse{Code: errorCode, Message: errorMessage, Description: errorDescription}
+		return http.StatusNotFound, errorResponse
 	}
 
-	errorResponse := &responses.ErrorResponse{Code: 4, Message: "Not found.", Description: "Failed to reset account password. Could not find account to reset the password for."}
-	return http.StatusNotFound, errorResponse
+	return http.StatusOK, account
 }
