@@ -28,6 +28,8 @@ func GetErrorDescription(code int) string {
 		return "Login failed as no account was found that matched the given login and password."
 	case ResetPasswordFailed:
 		return "Failed to reset account password as no account could be found for the given account identifier with the given password."
+	case MalformedAccountID:
+		return "The account identifier supplied could not be correclty parsed to a recognizable integer."
 	}
 
 	return "An unknown error occurred."

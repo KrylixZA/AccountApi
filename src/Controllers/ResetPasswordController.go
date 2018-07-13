@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"../Diagnostics"
 	"../Models/Requests"
 	"../Models/Responses"
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,11 @@ func (controller *AccountController) ResetPassword(ctx *gin.Context) {
 	accountID, error := strconv.Atoi(ctx.Param("accountId"))
 
 	if error != nil {
-		errorResponse := responses.ErrorResponse{Code: 2, Message: "Internal Server Error.", Description: "Failed to convert the parameter to an integer."}
+		errorCode := diagnostics.MalformedAccountID
+		errorMessage := "Internal server error."
+		errorDescription := diagnostics.GetErrorDescription(errorCode)
+
+		errorResponse := responses.ErrorResponse{Code: errorCode, Message: errorMessage, Description: errorDescription}
 		ctx.JSON(http.StatusInternalServerError, errorResponse)
 		return
 	}

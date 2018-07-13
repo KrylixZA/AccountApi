@@ -14,4 +14,5 @@ const (
 	NoAccountDetailsFound = 11
 	LoginFailed           = 12
 	ResetPasswordFailed   = 13
+	MalformedAccountID    = 14
 )
