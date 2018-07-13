@@ -79,6 +79,11 @@ paths:
           schema:
             $ref: '#/definitions/models.Account'
             type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
+            type: object
         "500":
           description: Internal Server Error
           schema:
@@ -138,6 +143,11 @@ paths:
           schema:
             $ref: '#/definitions/models.Account'
             type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
+            type: object
         "404":
           description: Not Found
           schema:
@@ -169,6 +179,11 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Account'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responses.ErrorResponse'
             type: object
         "404":
           description: Not Found
