@@ -2,15 +2,15 @@ package dataaccess
 
 import "../Models"
 
-func (AccountDataAccess) Login(login string, password string) (*models.Account, bool) {
+func (AccountDataAccess) Login(login string, password string) (bool, *models.Account) {
 	// TODO: Replace this setup with a DB call.
 	setupAccounts()
 
 	for _, item := range accounts {
 		if item.Login == login && item.Password == password {
-			return &item, true
+			return true, &item
 		}
 	}
 
-	return nil, false
+	return false, nil
 }

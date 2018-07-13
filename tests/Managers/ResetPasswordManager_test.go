@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"../../src/Diagnostics"
 	"../../src/Models"
 	"../../src/Models/Requests"
 	"../../src/Models/Responses"
@@ -20,17 +21,20 @@ func TestResetPassword_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t
 	request := requestBuilder.WithCurrentPassword("password1234").WithNewPassword("test1234").Build()
 
 	expectedStatusCode := http.StatusNotFound
-	expectedResponse := responseBuilder.WithCode(4).WithMessage("Not found.").WithDescription("Failed to reset account password. Could not find account to reset the password for.").Build()
+	expectedErrorCode := diagnostics.ResetPasswordFailed
+	expectedErrorMessage := "Not found."
+	expectedErrorDescription := diagnostics.GetErrorDescription(expectedErrorCode)
+	expectedResponse := responseBuilder.WithCode(expectedErrorCode).WithMessage(expectedErrorMessage).WithDescription(expectedErrorDescription).Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		ResetPasswordFunc: func(request requests.ResetPasswordRequest) (*models.Account, bool) {
-			return nil, false
+		ResetPasswordFunc: func(request *requests.ResetPasswordRequest) (bool, *models.Account) {
+			return false, nil
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, *request)
+	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, request)
 
 	// Assert
 	actualResponse := actualResponseInterface.(*responses.ErrorResponse)
@@ -63,15 +67,15 @@ func TestResetPassword_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t 
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		ResetPasswordFunc: func(request requests.ResetPasswordRequest) (*models.Account, bool) {
+		ResetPasswordFunc: func(request *requests.ResetPasswordRequest) (bool, *models.Account) {
 			account := models.Account{AccountID: 1, Login: "test@test.com", Password: "Test1234", FirstName: "Simon", Surname: "Headley", Email: "test@test.com"}
-			return &account, true
+			return true, &account
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, *request)
+	actualStatusCode, actualResponseInterface := manager.ResetPassword(1, request)
 
 	// Assert
 	actualAccount := actualResponseInterface.(*models.Account)

@@ -6,8 +6,8 @@ import (
 )
 
 type IAccountDataAccess interface {
-	GetAccountDetails(accountID int) (*models.Account, bool)
-	Login(login string, password string) (*models.Account, bool)
-	CreateAccount(request *requests.CreateAccountRequest) (*models.Account, bool)
-	ResetPassword(accountID int, request *requests.ResetPasswordRequest) (*models.Account, bool)
+	GetAccountDetails(accountID int) (bool, *models.Account)
+	Login(login string, password string) (bool, *models.Account)
+	CreateAccount(request *requests.CreateAccountRequest) (bool, *models.Account)
+	ResetPassword(accountID int, request *requests.ResetPasswordRequest) (bool, *models.Account)
 }

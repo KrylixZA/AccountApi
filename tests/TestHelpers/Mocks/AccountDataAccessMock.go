@@ -6,24 +6,24 @@ import (
 )
 
 type AccountDataAccessMock struct {
-	GetAccountDetailsFunc func(accountID int) (*models.Account, bool)
-	LoginFunc             func(login string, password string) (*models.Account, bool)
-	CreateAccountFunc     func(request requests.CreateAccountRequest) (*models.Account, bool)
-	ResetPasswordFunc     func(request requests.ResetPasswordRequest) (*models.Account, bool)
+	GetAccountDetailsFunc func(accountID int) (bool, *models.Account)
+	LoginFunc             func(login string, password string) (bool, *models.Account)
+	CreateAccountFunc     func(request *requests.CreateAccountRequest) (bool, *models.Account)
+	ResetPasswordFunc     func(request *requests.ResetPasswordRequest) (bool, *models.Account)
 }
 
-func (mock AccountDataAccessMock) GetAccountDetails(accountID int) (*models.Account, bool) {
+func (mock AccountDataAccessMock) GetAccountDetails(accountID int) (bool, *models.Account) {
 	return mock.GetAccountDetailsFunc(accountID)
 }
 
-func (mock AccountDataAccessMock) Login(login string, password string) (*models.Account, bool) {
+func (mock AccountDataAccessMock) Login(login string, password string) (bool, *models.Account) {
 	return mock.LoginFunc(login, password)
 }
 
-func (mock AccountDataAccessMock) CreateAccount(request requests.CreateAccountRequest) (*models.Account, bool) {
+func (mock AccountDataAccessMock) CreateAccount(request *requests.CreateAccountRequest) (bool, *models.Account) {
 	return mock.CreateAccountFunc(request)
 }
 
-func (mock AccountDataAccessMock) ResetPassword(accountID int, request requests.ResetPasswordRequest) (*models.Account, bool) {
+func (mock AccountDataAccessMock) ResetPassword(accountID int, request *requests.ResetPasswordRequest) (bool, *models.Account) {
 	return mock.ResetPasswordFunc(request)
 }

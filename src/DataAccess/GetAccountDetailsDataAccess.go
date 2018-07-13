@@ -2,14 +2,14 @@ package dataaccess
 
 import models "../Models"
 
-func (AccountDataAccess) GetAccountDetails(accountID int) (*models.Account, bool) {
+func (AccountDataAccess) GetAccountDetails(accountID int) (bool, *models.Account) {
 	// TODO: Replace this setup with a DB call.
 	setupAccounts()
 
 	account, ok := accounts[accountID]
 	if ok {
-		return &account, true
+		return true, &account
 	}
 
-	return nil, false
+	return false, nil
 }

@@ -10,5 +10,5 @@ go build
 ./src
 ```
 
-> To view the API documentation, browse to http://localhost:8080/swagger/index.html
+> To view the API documentation, browse to http://localhost:8080/swagger/index.html.
 > To test the API, import the postman collection from https://github.com/KrylixZA/AccountApi/tree/master/postman into Postman and send the requests.

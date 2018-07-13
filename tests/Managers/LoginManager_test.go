@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"../../src/Diagnostics"
 	"../../src/Models"
 	"../../src/Models/Responses"
 	"../TestHelpers/Builders"
@@ -13,16 +14,20 @@ import (
 
 func TestLogin_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t *testing.T) {
 	// Arrange
+	responseBuilder := builders.ErrorResponseBuilder{}
+
 	login := "testLogin"
 	password := "testPassword"
 
-	responseBuilder := builders.ErrorResponseBuilder{}
 	expectedStatusCode := http.StatusNotFound
-	expectedResponse := responseBuilder.WithCode(1).WithMessage("Not found.").WithDescription("Login failed as no account was found with the given login and password.").Build()
+	expectedErrorCode := diagnostics.LoginFailed
+	expectedErrorMessage := "Not found."
+	expectedErrorDescription := diagnostics.GetErrorDescription(expectedErrorCode)
+	expectedResponse := responseBuilder.WithCode(expectedErrorCode).WithMessage(expectedErrorMessage).WithDescription(expectedErrorDescription).Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		LoginFunc: func(login string, password string) (*models.Account, bool) {
-			return nil, false
+		LoginFunc: func(login string, password string) (bool, *models.Account) {
+			return false, nil
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
@@ -61,9 +66,9 @@ func TestLogin_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t *testing
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		LoginFunc: func(login string, password string) (*models.Account, bool) {
+		LoginFunc: func(login string, password string) (bool, *models.Account) {
 			account := models.Account{AccountID: 1, Login: "test@test.com", Password: "Test1234", FirstName: "Simon", Surname: "Headley", Email: "test@test.com"}
-			return &account, true
+			return true, &account
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)

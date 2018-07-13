@@ -15,7 +15,7 @@ func TestLogin_GivenIncorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsucce
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	success, actualAccount := dataAccess.Login(login, password)
 
 	// Assert
 	if success {
@@ -34,7 +34,7 @@ func TestLogin_GivenIncorrectLoginAndCorrectPassword_ShouldReturnNilAndUnsuccess
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	success, actualAccount := dataAccess.Login(login, password)
 
 	// Assert
 	if success {
@@ -53,7 +53,7 @@ func TestLogin_GivenCorrectLoginAndIncorrectPassword_ShouldReturnNilAndUnsuccess
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	success, actualAccount := dataAccess.Login(login, password)
 
 	// Assert
 	if success {
@@ -75,7 +75,7 @@ func TestLogin_GivenCorrectLoginAndCorrectPassword_ShouldReturnAccountAndSuccess
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.Login(login, password)
+	success, actualAccount := dataAccess.Login(login, password)
 
 	// Assert
 	if !success {

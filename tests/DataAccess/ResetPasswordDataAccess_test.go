@@ -15,7 +15,7 @@ func TestResetPassword_GivenRequestWithIncorrectAccountIdAndIncorrectCurrentPass
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(-1, *request)
+	success, actualAccount := dataAccess.ResetPassword(-1, request)
 
 	// Assert
 	if success {
@@ -34,7 +34,7 @@ func TestResetPassword_GivenRequestWithIncorrectAccountIdAndCorrectCurrentPasswo
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(-1, *request)
+	success, actualAccount := dataAccess.ResetPassword(-1, request)
 
 	// Assert
 	if success {
@@ -53,7 +53,7 @@ func TestResetPassword_GivenRequestWithCorrectAccountIdAndIncorrectCurrentPasswo
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(1, *request)
+	success, actualAccount := dataAccess.ResetPassword(1, request)
 
 	// Assert
 	if success {
@@ -75,7 +75,7 @@ func TestResetPassword_GivenRequestWithCorrectAccountIdAndCorrectCurrentPassword
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.ResetPassword(1, *request)
+	success, actualAccount := dataAccess.ResetPassword(1, request)
 
 	// Assert
 	if !success {

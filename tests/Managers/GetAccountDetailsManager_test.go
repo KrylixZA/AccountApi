@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"../../src/Diagnostics"
 	"../../src/Models"
 	"../../src/Models/Responses"
 	"../TestHelpers/Builders"
@@ -13,15 +14,19 @@ import (
 
 func TestGetAccountDetails_GivenUnsuccessfulResult_ShouldReturn404AndErrorResponse(t *testing.T) {
 	// Arrange
+	responseBuilder := builders.ErrorResponseBuilder{}
+
 	accountID := -1
 
-	responseBuilder := builders.ErrorResponseBuilder{}
 	expectedStatusCode := http.StatusNotFound
-	expectedResponse := responseBuilder.WithCode(1).WithMessage("Not found.").WithDescription("No accounts were found with the given identifier and hence no details could be returned.").Build()
+	expectedErrorCode := diagnostics.NoAccountDetailsFound
+	expectedErrorMessage := "Not found."
+	expectedErrorDescription := diagnostics.GetErrorDescription(expectedErrorCode)
+	expectedResponse := responseBuilder.WithCode(expectedErrorCode).WithMessage(expectedErrorMessage).WithDescription(expectedErrorDescription).Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		GetAccountDetailsFunc: func(accountID int) (*models.Account, bool) {
-			return nil, false
+		GetAccountDetailsFunc: func(accountID int) (bool, *models.Account) {
+			return false, nil
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
@@ -51,17 +56,17 @@ func TestGetAccountDetails_GivenUnsuccessfulResult_ShouldReturn404AndErrorRespon
 
 func TestGetAccountDetails_GivenSuccessfulResult_ShouldReturn200AndAccountDetails(t *testing.T) {
 	// Arrange
-	accountID := 1
-
 	accountBuilder := builders.AccountBuilder{}
+
+	accountID := 1
 
 	expectedStatusCode := http.StatusOK
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		GetAccountDetailsFunc: func(accountID int) (*models.Account, bool) {
+		GetAccountDetailsFunc: func(accountID int) (bool, *models.Account) {
 			account := models.Account{AccountID: accountID, Login: "test@test.com", Password: "Test1234", FirstName: "Simon", Surname: "Headley", Email: "test@test.com"}
-			return &account, true
+			return true, &account
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)

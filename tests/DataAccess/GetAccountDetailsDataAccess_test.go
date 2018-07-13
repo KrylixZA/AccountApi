@@ -14,7 +14,7 @@ func TestGetAccountGetails_GivenAccountIdNotInMap_ShouldReturnNilAndUnsuccessful
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	account, success := dataAccess.GetAccountDetails(accountID)
+	success, account := dataAccess.GetAccountDetails(accountID)
 
 	// Assert
 	if success {
@@ -35,7 +35,7 @@ func TestGetAccountDetails_GivenAccountIdInMap_ShouldReturnAccountAndSuccessfulR
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.GetAccountDetails(accountID)
+	success, actualAccount := dataAccess.GetAccountDetails(accountID)
 
 	// Assert
 	if !success {

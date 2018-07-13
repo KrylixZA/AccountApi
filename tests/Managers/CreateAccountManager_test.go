@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"../../src/Diagnostics"
 	"../../src/Models"
 	"../../src/Models/Requests"
 	"../../src/Models/Responses"
@@ -20,17 +21,20 @@ func TestCreateAccount_GivenUnsuccessfulResult_ShouldReturn500AndErrorResponse(t
 	request := requestBuilder.WithUsername("test@test.com").WithEmail("test@test.com").WithFirstName("Simon").WithSurname("Headley").WithPassword("Test1234").Build()
 
 	expectedStatusCode := http.StatusInternalServerError
-	expectedResponse := responseBuilder.WithCode(3).WithMessage("Internal Server Error.").WithDescription("Failed to create account.").Build()
+	expectedErrorCode := diagnostics.FailedToCreateAccount
+	expectedErrorMessage := "Internal server error."
+	expectedErrorDescription := diagnostics.GetErrorDescription(expectedErrorCode)
+	expectedResponse := responseBuilder.WithCode(expectedErrorCode).WithMessage(expectedErrorMessage).WithDescription(expectedErrorDescription).Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (*models.Account, bool) {
-			return nil, false
+		CreateAccountFunc: func(request *requests.CreateAccountRequest) (bool, *models.Account) {
+			return false, nil
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseInterface := manager.CreateAccount(*request)
+	actualStatusCode, actualResponseInterface := manager.CreateAccount(request)
 
 	// Assert
 	actualResponse := actualResponseInterface.(*responses.ErrorResponse)
@@ -63,15 +67,15 @@ func TestCreateAccount_GivenSuccessfulResult_ShouldReturn201AndMapOfWithCreatedA
 	expectedAccount := accountBuilder.WithAccountID(1).WithLogin("test@test.com").WithPassword("Test1234").WithFirstName("Simon").WithSurname("Headley").WithEmail("test@test.com").Build()
 
 	mockedAccountDataAccess := mocks.AccountDataAccessMock{
-		CreateAccountFunc: func(request requests.CreateAccountRequest) (*models.Account, bool) {
+		CreateAccountFunc: func(request *requests.CreateAccountRequest) (bool, *models.Account) {
 			account := models.Account{AccountID: 1, Login: request.Email, Password: request.Password, FirstName: request.FirstName, Surname: request.Surname, Email: request.Email}
-			return &account, true
+			return true, &account
 		},
 	}
 	manager := getSystemUnderTestAccountManager(mockedAccountDataAccess)
 
 	// Act
-	actualStatusCode, actualResponseInterface := manager.CreateAccount(*request)
+	actualStatusCode, actualResponseInterface := manager.CreateAccount(request)
 
 	// Assert
 	actualAccount := actualResponseInterface.(*models.Account)

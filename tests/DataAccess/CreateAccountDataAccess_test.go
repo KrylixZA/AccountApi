@@ -18,7 +18,7 @@ func TestCreateAccount_GivenCreateAccountRequest_ShouldReturnAccountsAndSuccessf
 	dataAccess := getSystemUnderTestAccountDataAccess()
 
 	// Act
-	actualAccount, success := dataAccess.CreateAccount(*request)
+	success, actualAccount := dataAccess.CreateAccount(request)
 
 	// Assert
 	if !success {

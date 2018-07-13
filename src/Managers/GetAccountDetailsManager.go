@@ -8,14 +8,14 @@ import (
 )
 
 func (manager *AccountManager) GetAccountDetails(accountID int) (int, interface{}) {
-	account, success := manager.DataAccess.GetAccountDetails(accountID)
+	success, account := manager.DataAccess.GetAccountDetails(accountID)
 
 	if !success {
 		errorCode := diagnostics.NoAccountDetailsFound
 		errorMessage := "Not found."
 		errorDescription := diagnostics.GetErrorDescription(errorCode)
 		errorResponse := responses.ErrorResponse{Code: errorCode, Message: errorMessage, Description: errorDescription}
-		return http.StatusNotFound, errorResponse
+		return http.StatusNotFound, &errorResponse
 	}
 
 	return http.StatusOK, account
